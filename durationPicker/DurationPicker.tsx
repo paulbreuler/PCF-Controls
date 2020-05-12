@@ -123,7 +123,6 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
           this.setState({ hours: this.state.hours - this.state.incrementHrsValue }, this.onTextFieldChange);
         break;
     }
-
   }
 
   private onTextFieldChange() {

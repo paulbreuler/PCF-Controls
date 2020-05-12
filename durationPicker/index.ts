@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import ReactDOM = require("react-dom");
 import React = require("react");
-import { IDurationPickerProps, DurationPicker } from "./extension";
+import { IDurationPickerProps, DurationPicker } from "./DurationPicker";
 import { isNullOrUndefined } from "util";
 
 export class DuractionPicker implements ComponentFramework.StandardControl<IInputs, IOutputs> {
@@ -23,7 +23,6 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	constructor() {
 
 	}
-
 
 	/**
 	 * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
