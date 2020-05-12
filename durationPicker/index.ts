@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import ReactDOM = require("react-dom");
 import React = require("react");
-import { IButtonProps, CustomButton } from "./extension";
+import { IDurationPickerProps, DurationPicker } from "./extension";
 
 
 export class DuractionPicker implements ComponentFramework.StandardControl<IInputs, IOutputs> {
@@ -43,10 +43,10 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
 
-		let props: IButtonProps = {
+		let props: IDurationPickerProps = {
 			context: this._context,
 		}
-		ReactDOM.render(React.createElement(CustomButton, props), this._container);
+		ReactDOM.render(React.createElement(DurationPicker, props), this._container);
 	}
 
 	/** 
