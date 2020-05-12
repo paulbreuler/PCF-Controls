@@ -12,19 +12,6 @@ const buttonStyle: IButtonStyles = {
   },
 };
 
-const textFieldStyle: ITextFieldStyles = {
-  root: {},
-  fieldGroup: {},
-  prefix: {},
-  suffix: {},
-  field: { textAlign: "right" },
-  icon: {},
-  description: {},
-  wrapper: {},
-  errorMessage: {},
-  subComponentStyles: { label: {} }
-}
-
 export interface IDurationPickerProps {
   context: ComponentFramework.Context<IInputs>;
   onDurationChange: any,
@@ -49,7 +36,7 @@ const numericalSpacingStackTokens: IStackTokens = {
   padding: 10,
 };
 
-const narrowTextFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 50 } };
+const narrowTextFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 50 }, field: { textAlign: "right" } };
 
 export class DurationPicker extends React.Component<IDurationPickerProps, IDurationPickerState> {
   private maxMin: number = 60;
