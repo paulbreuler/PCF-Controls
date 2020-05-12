@@ -2,12 +2,20 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import ReactDOM = require("react-dom");
 import React = require("react");
 import { IDurationPickerProps, DurationPicker } from "./extension";
-
+import { isNullOrUndefined } from "util";
 
 export class DuractionPicker implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
+	private _input: number;
+	private _inputElement: React.ReactElement;
 	private notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
+
+	private props: IDurationPickerProps = {
+		context: this._context,
+		onDurationChange: this.handleDurationUpdate.bind(this),
+		inputValue: this._input ? this._input : 0
+	}
 
 	/**
 	 * Empty constructor.
@@ -15,6 +23,7 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	constructor() {
 
 	}
+
 
 	/**
 	 * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
@@ -29,6 +38,12 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 		this._container = container;
 		this.notifyOutputChanged = notifyOutputChanged;
 
+		if (!isNullOrUndefined(context.parameters.duration) && !isNullOrUndefined(context.parameters.duration.raw)) {
+			this._input = context.parameters.duration.raw || 0;
+			this.props.inputValue = this._input ? this._input : 0;
+
+		}
+
 		this.renderControl(context);
 	}
 
@@ -38,15 +53,22 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		this._context = context;
+
+		if (this._input != context.parameters.duration.raw || (isNullOrUndefined(this._input) && !isNullOrUndefined(context.parameters.duration.raw))) {
+			this._input = context.parameters.duration.raw || 0;
+		}
+
 		this.renderControl(context);
 	}
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
+		ReactDOM.render(this._inputElement = React.createElement(DurationPicker, this.props), this._container);
+	}
 
-		let props: IDurationPickerProps = {
-			context: this._context,
-		}
-		ReactDOM.render(React.createElement(DurationPicker, props), this._container);
+	private handleDurationUpdate(value: number) {
+		this.props.inputValue = value;
+		this._input = value;
+		this.notifyOutputChanged();
 	}
 
 	/** 
@@ -54,7 +76,7 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
 	 */
 	public getOutputs(): IOutputs {
-		return {};
+		return { duration: this._input };
 	}
 
 	/** 
