@@ -38,8 +38,7 @@ const numericalSpacingStackTokens: IStackTokens = {
 
 const narrowTextFieldStyles: Partial<ITextFieldStyles> = {
   fieldGroup: [
-    { width: 50 },
-    { border: "none" }
+    { width: 50 }
   ],
   field: { textAlign: "center" }
 };
@@ -96,7 +95,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       case "minutes":
         if (this.state.hours < this.maxHour) {
           if (this.state.minutes < this.maxMin) {
-            let incrementValue = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
+            let incrementValue: number = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
             this.setMinutes(this.state.minutes + incrementValue);
           } else {
             this.setMinutes(0);
@@ -129,28 +128,11 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.setState({ interval: null });
   }
 
-  private handleKeyPress(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
-    if (event.keyCode === 32 || event.keyCode === 13) {
-      if (this.isKeyDownDelay) return;
-      this.isKeyDownDelay = true;
-      let _this = this;
-      setTimeout(function () { _this.isKeyDownDelay = false; }, this.keyDownDelay);
-      switch (type) {
-        case "increment":
-          this.increment(target);
-          break;
-        case "decrement":
-          this.decrement(target);
-          break;
-      }
-    }
-  }
-
   private decrement(target: string) {
     switch (target) {
       case "minutes":
         if (this.state.minutes > 0) {
-          let decrementValue = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
+          let decrementValue: number = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
           this.setMinutes(this.state.minutes - decrementValue);
         } else if (this.state.hours > 0) {
           this.setMinutes(45);
@@ -172,8 +154,40 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.setState({ hours: value }, this.liftDurationChange);
   }
 
+  private handleKeyPress(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      if (this.isKeyDownDelay) return;
+      this.isKeyDownDelay = true;
+      let _this = this;
+      setTimeout(function () { _this.isKeyDownDelay = false; }, this.keyDownDelay);
+      switch (type) {
+        case "increment":
+          this.increment(target);
+          break;
+        case "decrement":
+          this.decrement(target);
+          break;
+      }
+    }
+  }
+
   private liftDurationChange() {
     this.props.onDurationChange(this.state.hours * 60 + this.state.minutes);
+  }
+
+  private onTextChange(event: any, target: string) {
+
+    const parsedValue = parseInt(event.target.value);
+
+    switch (target) {
+      case "hours":
+        this.setState({ hours: parsedValue }, this.liftDurationChange)
+        break;
+      case "minutes":
+        this.setState({ minutes: parsedValue }, this.liftDurationChange)
+        break;
+    }
+
   }
 
   render() {
@@ -186,7 +200,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseOut={() => this.stopContinuousDecrement("hours")}
             onKeyDown={(e) => this.handleKeyPress(e, "increment", "hours")} />
           <TextField styles={narrowTextFieldStyles} value={this.state.hours.toString()}
-            onChange={(e: any) => this.setState({ hours: e.target.value }, this.liftDurationChange)} />
+            onChange={(e: any) => this.onTextChange(e, "hours")} borderless />
           <IconButton id="hours" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle}
             onMouseDown={() => { this.startContinuousDecrement("hours") }}
             onMouseUp={() => this.stopContinuousDecrement("hours")}
@@ -201,7 +215,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseOut={() => this.stopContinuousDecrement("minutes")}
             onKeyDown={(e) => this.handleKeyPress(e, "increment", "minutes")} />
           <TextField styles={narrowTextFieldStyles} value={this.state.minutes.toString()}
-            onChange={(e: any) => this.setState({ minutes: e.target.value }, this.liftDurationChange)} />
+            onChange={(e: any) => this.onTextChange(e, "minutes")} borderless />
           <IconButton id="minutes" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousDecrement("minutes")}
             onMouseUp={() => this.stopContinuousDecrement("minutes")}
