@@ -59,6 +59,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     }
 
     this.increment = this.increment.bind(this);
+    this.setMinutes = this.setMinutes.bind(this);
+    this.setHours.bind(this);
     this.decrement = this.decrement.bind(this);
     this.startContinuousDecrement = this.startContinuousDecrement.bind(this);
     this.stopContinuousDecrement = this.stopContinuousDecrement.bind(this);
@@ -90,24 +92,33 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       case "minutes":
         if (this.state.hours < this.maxHour) {
           if (this.state.minutes < this.maxMin - this.state.incrementMinValue) {
-            this.setState({ minutes: this.state.minutes + this.state.incrementMinValue }, this.liftDurationChange);
+            this.setMinutes(this.state.minutes + this.state.incrementMinValue);
           } else {
-            this.setState({ minutes: 0 });
-            this.setState({ hours: this.state.hours + 1 }, this.liftDurationChange);
+            this.setMinutes(0);
+            this.setHours(this.state.hours + 1);
           }
         }
         break;
       case "hours":
         if (this.state.hours < this.maxHour) {
-          this.setState({ hours: this.state.hours + this.state.incrementHrsValue }, this.liftDurationChange);
-          if (this.state.hours + this.state.incrementHrsValue === this.maxHour) {
-            this.setState({ minutes: 0 }, this.liftDurationChange);
+          let newValue = this.state.hours + this.state.incrementHrsValue;
+          this.setHours(newValue);
+          if (newValue === this.maxHour) {
+            this.setMinutes(0);
           }
         } else {
-          this.setState({ minutes: 0 }, this.liftDurationChange);
+          this.setMinutes(0);
         }
         break;
     }
+  }
+
+  private setMinutes(value: number) {
+    this.setState({ minutes: value }, this.liftDurationChange);
+  }
+
+  private setHours(value: number) {
+    this.setState({ hours: value }, this.liftDurationChange);
   }
 
   private startContinuousDecrement(target: string) {
