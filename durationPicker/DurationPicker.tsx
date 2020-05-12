@@ -185,7 +185,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseUp={() => this.stopContinuousIncrement("hours")}
             onMouseOut={() => this.stopContinuousDecrement("hours")}
             onKeyDown={(e) => this.handleKeyPress(e, "increment", "hours")} />
-          <TextField styles={narrowTextFieldStyles} value={this.state.hours.toString()} readOnly />
+          <TextField styles={narrowTextFieldStyles} value={this.state.hours.toString()}
+            onChange={(e: any) => this.setState({ hours: e.target.value }, this.liftDurationChange)} />
           <IconButton id="hours" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle}
             onMouseDown={() => { this.startContinuousDecrement("hours") }}
             onMouseUp={() => this.stopContinuousDecrement("hours")}
@@ -199,7 +200,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseUp={() => this.stopContinuousIncrement("minutes")}
             onMouseOut={() => this.stopContinuousDecrement("minutes")}
             onKeyDown={(e) => this.handleKeyPress(e, "increment", "minutes")} />
-          <TextField styles={narrowTextFieldStyles} value={this.state.minutes.toString()} readOnly />
+          <TextField styles={narrowTextFieldStyles} value={this.state.minutes.toString()}
+            onChange={(e: any) => this.setState({ minutes: e.target.value }, this.liftDurationChange)} />
           <IconButton id="minutes" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousDecrement("minutes")}
             onMouseUp={() => this.stopContinuousDecrement("minutes")}
