@@ -59,9 +59,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     }
 
     this.increment = this.increment.bind(this);
-    this.setMinutes = this.setMinutes.bind(this);
-    this.setHours.bind(this);
     this.decrement = this.decrement.bind(this);
+    this.setMinutes = this.setMinutes.bind(this);
+    this.setHours = this.setHours.bind(this);
     this.startContinuousDecrement = this.startContinuousDecrement.bind(this);
     this.stopContinuousDecrement = this.stopContinuousDecrement.bind(this);
     this.liftDurationChange = this.liftDurationChange.bind(this);
@@ -113,14 +113,6 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     }
   }
 
-  private setMinutes(value: number) {
-    this.setState({ minutes: value }, this.liftDurationChange);
-  }
-
-  private setHours(value: number) {
-    this.setState({ hours: value }, this.liftDurationChange);
-  }
-
   private startContinuousDecrement(target: string) {
     this.decrement(target);
     let myInterval = setInterval(() => this.decrement(target), 250)
@@ -147,6 +139,14 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
           this.setHours(this.state.hours - this.state.incrementHrsValue);
         break;
     }
+  }
+
+  private setMinutes(value: number) {
+    this.setState({ minutes: value }, this.liftDurationChange);
+  }
+
+  private setHours(value: number) {
+    this.setState({ hours: value }, this.liftDurationChange);
   }
 
   private liftDurationChange() {

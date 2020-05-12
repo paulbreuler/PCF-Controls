@@ -5,7 +5,7 @@
   },
   "license": "MIT",
   "version": "1.0.0",
-  "description": "A very simple React based PCF project for quick templating.",
+  "description": "A controlled duration picker that allows users to set hours and minutes with click or hold functionality",
   "scripts": {
     "build": "pcf-scripts build",
     "clean": "pcf-scripts clean",
