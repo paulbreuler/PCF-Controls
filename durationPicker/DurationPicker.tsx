@@ -82,16 +82,24 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   private increment(target: string) {
     switch (target) {
       case "minutes":
-        if (this.state.minutes < this.maxMin - this.state.incrementMinValue) {
-          this.setState({ minutes: this.state.minutes + this.state.incrementMinValue }, this.onTextFieldChange);
-        } else {
-          this.setState({ minutes: 0 });
-          this.setState({ hours: this.state.hours + 1 }, this.onTextFieldChange);
+        if (this.state.hours < this.maxHour) {
+          if (this.state.minutes < this.maxMin - this.state.incrementMinValue) {
+            this.setState({ minutes: this.state.minutes + this.state.incrementMinValue }, this.onTextFieldChange);
+          } else {
+            this.setState({ minutes: 0 });
+            this.setState({ hours: this.state.hours + 1 }, this.onTextFieldChange);
+          }
         }
         break;
       case "hours":
-        if (this.state.hours < this.maxHour)
+        if (this.state.hours < this.maxHour) {
           this.setState({ hours: this.state.hours + this.state.incrementHrsValue }, this.onTextFieldChange);
+          if (this.state.hours + this.state.incrementHrsValue === this.maxHour) {
+            this.setState({ minutes: 0 }, this.onTextFieldChange);
+          }
+        } else {
+          this.setState({ minutes: 0 }, this.onTextFieldChange);
+        }
         break;
     }
     this.onTextFieldChange();
@@ -133,15 +141,15 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     return (
       <Stack horizontal styles={stackStyles} disableShrink tokens={numericalSpacingStackTokens}>
         <Stack styles={stackStyles}>
-          <IconButton title="ChevronUpSmall" id="hours" iconProps={{ iconName: "ChevronUpSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousIncrement("hours") }} onMouseUp={() => this.stopContinuousIncrement("hours")} />
+          <IconButton title="ChevronUpSmall" id="hours" iconProps={{ iconName: "ChevronUpSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousIncrement("hours") }} onMouseUp={() => this.stopContinuousIncrement("hours")} onMouseOut={() => this.stopContinuousDecrement("hours")} />
           <TextField styles={narrowTextFieldStyles} value={this.state.hours.toString()} readOnly />
-          <IconButton id="hours" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousDecrement("hours") }} onMouseUp={() => this.stopContinuousDecrement("hours")} />
+          <IconButton id="hours" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousDecrement("hours") }} onMouseUp={() => this.stopContinuousDecrement("hours")} onMouseOut={() => this.stopContinuousDecrement("hours")} />
           <Text> HRS </Text>
         </Stack>
         <Stack styles={stackStyles}>
-          <IconButton title="ChevronUpSmall" id="minutes" iconProps={{ iconName: "ChevronUpSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousIncrement("minutes") }} onMouseUp={() => this.stopContinuousIncrement("minutes")} />
+          <IconButton title="ChevronUpSmall" id="minutes" iconProps={{ iconName: "ChevronUpSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousIncrement("minutes") }} onMouseUp={() => this.stopContinuousIncrement("minutes")} onMouseOut={() => this.stopContinuousDecrement("minutes")} />
           <TextField styles={narrowTextFieldStyles} value={this.state.minutes.toString()} readOnly />
-          <IconButton id="minutes" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousDecrement("minutes") }} onMouseUp={() => this.stopContinuousDecrement("minutes")} />
+          <IconButton id="minutes" iconProps={{ iconName: "ChevronDownSmall" }} styles={buttonStyle} onMouseDown={() => { this.startContinuousDecrement("minutes") }} onMouseUp={() => this.stopContinuousDecrement("minutes")} onMouseOut={() => this.stopContinuousDecrement("minutes")} />
           <Text> MIN </Text>
         </Stack>
       </Stack>
