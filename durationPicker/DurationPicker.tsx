@@ -36,7 +36,13 @@ const numericalSpacingStackTokens: IStackTokens = {
   padding: 10,
 };
 
-const narrowTextFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 50 }, field: { textAlign: "right" } };
+const narrowTextFieldStyles: Partial<ITextFieldStyles> = {
+  fieldGroup: [
+    { width: 50 },
+    { border: "none" }
+  ],
+  field: { textAlign: "center" }
+};
 
 export class DurationPicker extends React.Component<IDurationPickerProps, IDurationPickerState> {
   private maxMin: number = 60;
@@ -56,7 +62,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.decrement = this.decrement.bind(this);
     this.startContinuousDecrement = this.startContinuousDecrement.bind(this);
     this.stopContinuousDecrement = this.stopContinuousDecrement.bind(this);
-    this.onTextFieldChange = this.onTextFieldChange.bind(this);
+    this.liftDurationChange = this.liftDurationChange.bind(this);
   }
 
   private convertMinutes(minutes: number) {
@@ -84,25 +90,24 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       case "minutes":
         if (this.state.hours < this.maxHour) {
           if (this.state.minutes < this.maxMin - this.state.incrementMinValue) {
-            this.setState({ minutes: this.state.minutes + this.state.incrementMinValue }, this.onTextFieldChange);
+            this.setState({ minutes: this.state.minutes + this.state.incrementMinValue }, this.liftDurationChange);
           } else {
             this.setState({ minutes: 0 });
-            this.setState({ hours: this.state.hours + 1 }, this.onTextFieldChange);
+            this.setState({ hours: this.state.hours + 1 }, this.liftDurationChange);
           }
         }
         break;
       case "hours":
         if (this.state.hours < this.maxHour) {
-          this.setState({ hours: this.state.hours + this.state.incrementHrsValue }, this.onTextFieldChange);
+          this.setState({ hours: this.state.hours + this.state.incrementHrsValue }, this.liftDurationChange);
           if (this.state.hours + this.state.incrementHrsValue === this.maxHour) {
-            this.setState({ minutes: 0 }, this.onTextFieldChange);
+            this.setState({ minutes: 0 }, this.liftDurationChange);
           }
         } else {
-          this.setState({ minutes: 0 }, this.onTextFieldChange);
+          this.setState({ minutes: 0 }, this.liftDurationChange);
         }
         break;
     }
-    this.onTextFieldChange();
   }
 
   private startContinuousDecrement(target: string) {
@@ -120,20 +125,20 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     switch (target) {
       case "minutes":
         if (this.state.minutes > 0) {
-          this.setState({ minutes: this.state.minutes - this.state.incrementMinValue }, this.onTextFieldChange);
+          this.setState({ minutes: this.state.minutes - this.state.incrementMinValue }, this.liftDurationChange);
         } else if (this.state.hours > 0) {
-          this.setState({ minutes: 45 }), this.onTextFieldChange;
-          this.setState({ hours: this.state.hours - 1 }, this.onTextFieldChange);
+          this.setState({ minutes: 45 }), this.liftDurationChange;
+          this.setState({ hours: this.state.hours - 1 }, this.liftDurationChange);
         }
         break;
       case "hours":
         if (this.state.hours > 0)
-          this.setState({ hours: this.state.hours - this.state.incrementHrsValue }, this.onTextFieldChange);
+          this.setState({ hours: this.state.hours - this.state.incrementHrsValue }, this.liftDurationChange);
         break;
     }
   }
 
-  private onTextFieldChange() {
+  private liftDurationChange() {
     this.props.onDurationChange(this.state.hours * 60 + this.state.minutes);
   }
 
