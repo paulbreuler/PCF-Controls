@@ -136,15 +136,15 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     switch (target) {
       case "minutes":
         if (this.state.minutes > 0) {
-          this.setState({ minutes: this.state.minutes - this.state.incrementMinValue }, this.liftDurationChange);
+          this.setMinutes(this.state.minutes - this.state.incrementMinValue);
         } else if (this.state.hours > 0) {
-          this.setState({ minutes: 45 }), this.liftDurationChange;
-          this.setState({ hours: this.state.hours - 1 }, this.liftDurationChange);
+          this.setMinutes(45);
+          this.setHours(this.state.hours - 1);
         }
         break;
       case "hours":
         if (this.state.hours > 0)
-          this.setState({ hours: this.state.hours - this.state.incrementHrsValue }, this.liftDurationChange);
+          this.setHours(this.state.hours - this.state.incrementHrsValue);
         break;
     }
   }
