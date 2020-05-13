@@ -65,6 +65,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   private maxMin: number = 60;
   private maxHour: number = 24;
   private keyDownDelay: number = 100;
+  private mouseDownDelay: number = 250;
   private isKeyDownDelay: boolean = false;
 
   constructor(props: IDurationPickerProps) {
@@ -107,7 +108,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
    */
   private startContinuousIncrement(target: string): void {
     this.increment(target);
-    let myInterval = setInterval(() => this.increment(target), 250)
+    let myInterval = setInterval(() => this.increment(target), this.mouseDownDelay)
     this.setState({ interval: myInterval });
   }
 
@@ -126,9 +127,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
 
           let incrementValue: number = 1;
           if (this.props.allowSteppedVariation)
-            incrementValue = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
+            incrementValue = this.state.minutes % 5 === 0 ? 5 : 1;
 
-          if (this.state.minutes < this.maxMin) {
+          if (this.state.minutes + incrementValue < this.maxMin) {
 
             this.setMinutes(this.state.minutes + incrementValue);
           } else {
@@ -156,7 +157,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   */
   private startContinuousDecrement(target: string): void {
     this.decrement(target);
-    let myInterval = setInterval(() => this.decrement(target), 250)
+    let myInterval = setInterval(() => this.decrement(target), this.mouseDownDelay)
     this.setState({ interval: myInterval });
   }
 
@@ -175,7 +176,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
 
         let decrementValue: number = 1
         if (this.props.allowSteppedVariation)
-          decrementValue = this.state.minutes % 15 === 0 ? 15 : this.state.minutes % 5 === 0 ? 5 : 1;
+          decrementValue = this.state.minutes % 5 === 0 ? 5 : 1;
 
         if (this.state.minutes > 0) {
           this.setMinutes(this.state.minutes - decrementValue);
@@ -206,11 +207,15 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
    * @param target "hours" or "minutes" as string
    */
   private handleKeyPress(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
-    if (event.keyCode === 32 || event.keyCode === 13) {
+    if ([32, 13].includes(event.keyCode)) {
+
       if (this.isKeyDownDelay) return;
+
       this.isKeyDownDelay = true;
       let _this = this;
+
       setTimeout(function () { _this.isKeyDownDelay = false; }, this.keyDownDelay);
+
       switch (type) {
         case increment:
           this.increment(target);
