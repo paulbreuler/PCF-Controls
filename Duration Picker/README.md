@@ -1,5 +1,14 @@
 # Duration Picker
-A react based duration picker that allows user to enter hours and minutes manually, by clicking the arrows, or using key press events on the chevrons.
+A react based duration picker that allows users to enter hours and minutes manually, by clicking the chevrons or manually entering time up to 24 hours.
+
+Accepted input events:
+ - Manual text entry (digits only)
+ - Click
+ - Click and hold
+ - Click space bar or enter key while focused a chevron element
+ - Hold space bar or enter key while focused a chevron element
+ 
+ Holding will cause the increment/decrement action to accelerate. 
 
 ![Duration Picker Control](./durationPicker/img/DurationPicker.gif)
 
@@ -9,7 +18,5 @@ A react based duration picker that allows user to enter hours and minutes manual
 3. Run `npm start` to test things out.
 
 ## How to install
- - Reference the Microsft Docs [import custom controls](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls) article.
-
-## Notes
-- To disable stepping minutes by 5 set remove the property `allowSteppedVariation` from the index file in the `IDurationPickerProps` object.
+ - Grab a copy from the [releases section](https://github.com/paulbreuler/PCF-Controls/releases)
+ - If you choose to fork this repo and modify the code reference the Microsft Docs [import custom controls](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls) article.
