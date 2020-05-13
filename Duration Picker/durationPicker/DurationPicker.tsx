@@ -56,7 +56,7 @@ const narrowTextFieldStyles: Partial<ITextFieldStyles> = {
     {
       width: 35
     },
-    
+
   ],
   field: { textAlign: "center" }
 };
@@ -98,6 +98,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.startContinuousDecrement = this.startContinuousDecrement.bind(this);
     this.stopContinuousDecrement = this.stopContinuousDecrement.bind(this);
     this.liftDurationChange = this.liftDurationChange.bind(this);
+    this.setHoursText = this.setHoursText.bind(this);
+    this.setMinutesText = this.setMinutesText.bind(this);
   }
 
   /**
@@ -261,16 +263,44 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
 
     switch (target) {
       case Time.Hours:
+
         if (parsedValue > this.maxHour)
           parsedValue = this.maxHour;
-        this.setState({ hours: parsedValue }, this.liftDurationChange)
+
+        this.setHours(parsedValue);
         break;
       case Time.Minutes:
+
         if (parsedValue > this.maxMin)
           parsedValue = this.maxMin
-        this.setState({ minutes: parsedValue }, this.liftDurationChange)
+
+        if (this.state.hours === this.maxHour)
+          parsedValue = 0
+
+        this.setMinutes(parsedValue);
         break;
     }
+  }
+
+  private setHoursText(): string {
+    let hours = this.state.hours < 10 && this.state.hours > 0 ? `0${this.state.hours.toString()}` : this.state.hours <= 0 ? "" : this.state.hours.toString()
+    return hours
+  }
+
+  private setMinutesText(): string {
+    let minutes: string = ''
+
+    if (this.state.minutes < 10 && this.state.minutes > 0) {
+      minutes = `0${this.state.minutes.toString()}`;
+    } else if (this.state.minutes <= 0 && this.state.hours > 0) {
+      minutes = `0${this.state.minutes.toString()}`;
+    } else if (this.state.minutes <= 0) {
+      minutes = ""
+    } else {
+      minutes = this.state.minutes.toString()
+    }
+
+    return minutes
   }
 
   render() {
@@ -282,8 +312,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
             onKeyDown={(e) => this.handleKeyPress(e, increment, Time.Hours)} />
-          <TextField styles={narrowTextFieldStyles} value={this.state.hours.toString()}
-            onChange={(e: any) => this.onTextChange(e, Time.Hours)} borderless />
+          <TextField styles={narrowTextFieldStyles} value={this.setHoursText()}
+            onChange={(e: any) => this.onTextChange(e, Time.Hours)} borderless placeholder="--" />
           <IconButton title={downIcon} id={Time.Hours} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => { this.startContinuousDecrement(Time.Hours) }}
             onMouseUp={() => this.stopContinuousDecrement()}
@@ -300,8 +330,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
             onKeyDown={(e) => this.handleKeyPress(e, increment, Time.Minutes)} />
-          <TextField styles={narrowTextFieldStyles} value={this.state.minutes.toString()}
-            onChange={(e: any) => this.onTextChange(e, Time.Minutes)} borderless />
+          <TextField styles={narrowTextFieldStyles} value={this.setMinutesText()}
+            onChange={(e: any) => this.onTextChange(e, Time.Minutes)} borderless placeholder="--" />
           <IconButton title={downIcon} id={Time.Minutes} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousDecrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousDecrement()}
