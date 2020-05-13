@@ -1,7 +1,7 @@
 # Duration Picker
 A react based duration picker that allows user to enter hours and minutes manually, by clicking the arrows, or using key press events on the chevrons.
 
-![Duration Picker Control](./DurationPicker.gif)
+![Duration Picker Control](./durationPicker/img/DurationPicker.gif)
 
 ## How to test locally
 1. Run `npm i` to install all node modules.

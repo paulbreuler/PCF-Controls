@@ -3,6 +3,10 @@
   "author": {
     "name": "Paul Breuler"
   },
+  "repository": {
+    "url": "https://github.com/paulbreuler/PCF-Controls.git",
+    "type": "git"
+  },
   "license": "MIT",
   "version": "1.0.0",
   "description": "A controlled duration picker that allows users to set hours and minutes with click or hold functionality",

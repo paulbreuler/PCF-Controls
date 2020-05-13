@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Pickers" constructor="DuractionPicker" version="0.0.3" display-name-key="Duration Picker" description-key="Visual duration picker in hours/minutes" control-type="standard">
+  <control namespace="Pickers" constructor="DuractionPicker" version="0.0.3" display-name-key="Duration Picker" description-key="Visual duration picker in hours/minutes" control-type="standard" preview-image="img/DurationPicker.gif">
       <type-group name="numbers">
         <type>Whole.None</type>
       </type-group>
