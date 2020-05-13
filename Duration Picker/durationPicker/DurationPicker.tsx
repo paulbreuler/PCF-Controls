@@ -7,9 +7,9 @@ initializeIcons();
 
 //#region  Interfaces
 export interface IDurationPickerProps {
-  context: ComponentFramework.Context<IInputs>;
   onDurationChange: any,
-  inputValue: number
+  inputValue: number,
+  maxHours?: number,
 }
 
 export interface IDurationPickerState {
@@ -75,8 +75,8 @@ const upIcon = "ChevronUpSmall";
 const downIcon = "ChevronDownSmall";
 
 export class DurationPicker extends React.Component<IDurationPickerProps, IDurationPickerState> {
-  private maxMin: number = 60;
-  private maxHour: number = 24;
+  private maxMins: number = 60;
+  private maxHours: number = 24;
   private keyDownDelay: number = 100;
   private mouseDownDelay: number = 250;
   private isKeyDownDelay: boolean = false;
@@ -85,6 +85,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   constructor(props: IDurationPickerProps) {
     super(props);
     let duration = this.convertMinutes(this.props.inputValue);
+    
     this.state = {
       minutes: duration.minutes,
       hours: duration.hours,
@@ -93,6 +94,10 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       interval: null,
       isLongPress: false,
       longPressStartTime: null
+    }
+
+    if (this.props.maxHours) {
+      this.maxHours = this.props.maxHours;
     }
 
     this.increment = this.increment.bind(this);
@@ -148,7 +153,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   private increment(target: string): void {
     switch (target) {
       case Time.Minutes:
-        if (this.state.hours < this.maxHour) {
+        if (this.state.hours < this.maxHours) {
 
           let incrementValue: number = 1;
 
@@ -156,7 +161,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             incrementValue = 5;
           }
 
-          if (this.state.minutes + incrementValue < this.maxMin) {
+          if (this.state.minutes + incrementValue < this.maxMins) {
 
             this.setMinutes(this.state.minutes + incrementValue);
           } else {
@@ -166,10 +171,10 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
         }
         break;
       case Time.Hours:
-        if (this.state.hours < this.maxHour) {
+        if (this.state.hours < this.maxHours) {
           let newValue = this.state.hours + this.state.incrementHrsValue;
           this.setHours(newValue);
-          if (newValue === this.maxHour) {
+          if (newValue === this.maxHours) {
             this.setMinutes(0);
           }
         } else {
@@ -295,17 +300,17 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     switch (target) {
       case Time.Hours:
 
-        if (parsedValue > this.maxHour)
-          parsedValue = this.maxHour;
+        if (parsedValue > this.maxHours)
+          parsedValue = this.maxHours;
 
         this.setHours(parsedValue);
         break;
       case Time.Minutes:
 
-        if (parsedValue > this.maxMin)
-          parsedValue = this.maxMin
+        if (parsedValue > this.maxMins)
+          parsedValue = this.maxMins
 
-        if (this.state.hours === this.maxHour)
+        if (this.state.hours === this.maxHours)
           parsedValue = 0
 
         this.setMinutes(parsedValue);
