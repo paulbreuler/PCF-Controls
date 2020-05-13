@@ -99,7 +99,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.decrement = this.decrement.bind(this);
     this.setMinutes = this.setMinutes.bind(this);
     this.setHours = this.setHours.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.startContinuousDecrement = this.startContinuousDecrement.bind(this);
     this.stopContinuousDecrement = this.stopContinuousDecrement.bind(this);
     this.liftDurationChange = this.liftDurationChange.bind(this);
@@ -239,7 +240,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
    * @param type "increment" or "decrement" as string
    * @param target "hours" or "minutes" as string
    */
-  private handleKeyPress(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
+  private onKeyDown(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
     if ([32, 13].includes(event.keyCode)) {
 
       if (this.isKeyDownDelay) return;
@@ -261,6 +262,12 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
           this.decrement(target);
           break;
       }
+    }
+  }
+
+  private onKeyUp(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>) {
+    if ([32, 13].includes(event.keyCode)) {
+      this.setState({ isLongPress: false, longPressStartTime: null });
     }
   }
 
@@ -335,14 +342,16 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => this.startContinuousIncrement(Time.Hours)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.handleKeyPress(e, increment, Time.Hours)} />
+            onKeyDown={(e) => this.onKeyDown(e, increment, Time.Hours)}
+            onKeyUp={this.onKeyUp}  />
           <TextField styles={narrowTextFieldStyles} value={this.setHoursText()}
             onChange={(e: any) => this.onTextChange(e, Time.Hours)} borderless placeholder="--" />
           <IconButton title={downIcon} id={Time.Hours} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => { this.startContinuousDecrement(Time.Hours) }}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.handleKeyPress(e, decrement, Time.Hours)} />
+            onKeyDown={(e) => this.onKeyDown(e, decrement, Time.Hours)}
+            onKeyUp={this.onKeyUp}  />
           <Text> HRS </Text>
         </Stack>
         <Stack horizontalAlign="center" styles={centerStackStyles}>
@@ -353,14 +362,16 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => this.startContinuousIncrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.handleKeyPress(e, increment, Time.Minutes)} />
+            onKeyDown={(e) => this.onKeyDown(e, increment, Time.Minutes)}
+            onKeyUp={this.onKeyUp}  />
           <TextField styles={narrowTextFieldStyles} value={this.setMinutesText()}
             onChange={(e: any) => this.onTextChange(e, Time.Minutes)} borderless placeholder="--" />
           <IconButton title={downIcon} id={Time.Minutes} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousDecrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.handleKeyPress(e, decrement, Time.Minutes)} />
+            onKeyDown={(e) => this.onKeyDown(e, decrement, Time.Minutes)}
+            onKeyUp={this.onKeyUp} />
           <Text> MIN </Text>
         </Stack>
       </Stack>
