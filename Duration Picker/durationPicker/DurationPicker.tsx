@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextField, IStackStyles, Stack, IStackTokens, ITextFieldStyles, Text, IconButton, IButtonStyles, BaseButton, Button } from '@fluentui/react';
+import { TextField, IStackStyles, Stack, IStackTokens, ITextFieldStyles, Text, IconButton, IButtonStyles, BaseButton, Button, Label } from '@fluentui/react';
 import { IInputs } from "./generated/ManifestTypes";
 import { initializeIcons } from '@uifabric/icons';
 initializeIcons();
@@ -29,12 +29,20 @@ interface ITime {
 //#region styles
 const buttonStyle: IButtonStyles = {
   root: {
-    width: 50
+    width: 35
   },
 };
 
 const stackStyles: IStackStyles = {
   root: {
+  },
+};
+
+const centerStackStyles: IStackStyles = {
+  root: {
+    fontSize: 20,
+    fontWeight: "400",
+    marginTop: 32,
   },
 };
 
@@ -45,7 +53,10 @@ const numericalSpacingStackTokens: IStackTokens = {
 
 const narrowTextFieldStyles: Partial<ITextFieldStyles> = {
   fieldGroup: [
-    { width: 50 }
+    {
+      width: 35
+    },
+    
   ],
   field: { textAlign: "center" }
 };
@@ -279,6 +290,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseOut={() => this.stopContinuousDecrement()}
             onKeyDown={(e) => this.handleKeyPress(e, decrement, Time.Hours)} />
           <Text> HRS </Text>
+        </Stack>
+        <Stack horizontalAlign="center" styles={centerStackStyles}>
+          <span>:</span>
         </Stack>
         <Stack styles={stackStyles}>
           <IconButton title={upIcon} id={Time.Minutes} iconProps={{ iconName: upIcon }} styles={buttonStyle}
