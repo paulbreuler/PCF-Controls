@@ -1,12 +1,13 @@
-# Minimal-React-PCF
-A minimal React based PowerApps Component Framework (PCF) control template to help you get up and running quickly.
+# Duration Picker
+A react based duration picker that allows user to enter hours and minutes manually, by clicking the arrows, or using key press events on the chevrons.
 
-## How to use
+## How to test locally
 1. Run `npm i` to install all node modules.
 2. Run `npm run build` to build the project
 3. Run `npm start` to test things out.
 
-## References
-- [Getting Started with PCF blog](https://community.dynamics.com/crm/b/crminthefield/posts/getting-started-with-pcf-controls)
-- [Fluent UI](https://developer.microsoft.com/en-us/fluentui#/controls/web)
-- [React](https://reactjs.org/)
+## How to install
+ - Reference the Microsft Docs [import custom controls](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls) article.
+
+## Notes
+- To disable stepping minutes by 5 set remove the property `allowSteppedVariation` from the index file in the `IDurationPickerProps` object.
