@@ -14,8 +14,7 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	private props: IDurationPickerProps = {
 		context: this._context,
 		onDurationChange: this.handleDurationUpdate.bind(this),
-		inputValue: this._input ? this._input : 0,
-		allowSteppedVariation: true
+		inputValue: this._input ? this._input : 0
 	}
 
 	/**

@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { TextField, IStackStyles, Stack, IStackTokens, ITextFieldStyles, Text, IconButton, IButtonStyles, BaseButton, Button, Label } from '@fluentui/react';
+import { TextField, IStackStyles, Stack, IStackTokens, ITextFieldStyles, Text, IconButton, IButtonStyles, BaseButton, Button, Label, VirtualizedComboBox } from '@fluentui/react';
 import { IInputs } from "./generated/ManifestTypes";
 import { initializeIcons } from '@uifabric/icons';
+import { isNullOrUndefined } from 'util';
 initializeIcons();
 
 //#region  Interfaces
 export interface IDurationPickerProps {
   context: ComponentFramework.Context<IInputs>;
   onDurationChange: any,
-  inputValue: number,
-  allowSteppedVariation?: boolean
+  inputValue: number
 }
 
 export interface IDurationPickerState {
@@ -17,7 +17,9 @@ export interface IDurationPickerState {
   hours: number;
   incrementMinValue: number;
   incrementHrsValue: number;
-  interval: any
+  interval: any,
+  isLongPress: boolean,
+  longPressStartTime: Date | null,
 }
 
 interface ITime {
@@ -78,6 +80,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   private keyDownDelay: number = 100;
   private mouseDownDelay: number = 250;
   private isKeyDownDelay: boolean = false;
+  private mouseHoldVarianceDelay: number = 500;
 
   constructor(props: IDurationPickerProps) {
     super(props);
@@ -87,7 +90,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       hours: duration.hours,
       incrementMinValue: 15,
       incrementHrsValue: 1,
-      interval: null
+      interval: null,
+      isLongPress: false,
+      longPressStartTime: null
     }
 
     this.increment = this.increment.bind(this);
@@ -121,12 +126,18 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
    */
   private startContinuousIncrement(target: string): void {
     this.increment(target);
+
+    if (!this.state.isLongPress) {
+      this.setState({ longPressStartTime: new Date(), isLongPress: true })
+    }
+
     let myInterval = setInterval(() => this.increment(target), this.mouseDownDelay)
     this.setState({ interval: myInterval });
   }
 
   private stopContinuousIncrement(): void {
     clearInterval(this.state.interval);
+    this.setState({ isLongPress: false, longPressStartTime: null });
     this.setState({ interval: null });
   }
 
@@ -139,8 +150,10 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
         if (this.state.hours < this.maxHour) {
 
           let incrementValue: number = 1;
-          if (this.props.allowSteppedVariation)
-            incrementValue = this.state.minutes % 5 === 0 ? 5 : 1;
+
+          if (!isNullOrUndefined(this.state.longPressStartTime) && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
+            incrementValue = 5;
+          }
 
           if (this.state.minutes + incrementValue < this.maxMin) {
 
@@ -170,12 +183,18 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   */
   private startContinuousDecrement(target: string): void {
     this.decrement(target);
+
+    if (!this.state.isLongPress) {
+      this.setState({ longPressStartTime: new Date(), isLongPress: true })
+    }
+
     let myInterval = setInterval(() => this.decrement(target), this.mouseDownDelay)
     this.setState({ interval: myInterval });
   }
 
   private stopContinuousDecrement(): void {
     clearInterval(this.state.interval);
+    this.setState({ isLongPress: false, longPressStartTime: null });
     this.setState({ interval: null });
   }
 
@@ -188,8 +207,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       case Time.Minutes:
 
         let decrementValue: number = 1
-        if (this.props.allowSteppedVariation)
-          decrementValue = this.state.minutes % 5 === 0 ? 5 : 1;
+        if (!isNullOrUndefined(this.state.longPressStartTime) && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
+          decrementValue = 5;
+        }
 
         if (this.state.minutes > 0) {
           this.setMinutes(this.state.minutes - decrementValue);
@@ -226,6 +246,10 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
 
       this.isKeyDownDelay = true;
       let _this = this;
+
+      if (!this.state.isLongPress) {
+        this.setState({ longPressStartTime: new Date(), isLongPress: true })
+      }
 
       setTimeout(function () { _this.isKeyDownDelay = false; }, this.keyDownDelay);
 
