@@ -1,3 +1,5 @@
+![Duration Picker Control](./durationPicker/img/DurationPicker.gif)
+
 # Duration Picker
 A react based duration picker that allows users to enter hours and minutes manually, by clicking the chevrons or manually entering time up to 24 hours.
 
@@ -9,8 +11,6 @@ Accepted input events:
  - Hold space bar or enter key while focused a chevron element
  
  Holding will cause the increment/decrement action to accelerate. 
-
-![Duration Picker Control](./durationPicker/img/DurationPicker.gif)
 
 ## How to test locally
 1. Run `npm i` to install all node modules.
