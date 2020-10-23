@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <control namespace="Pickers" constructor="DuractionPicker" version="0.0.3" display-name-key="Duration Picker" description-key="Visual duration picker in hours/minutes" control-type="standard" preview-image="img/DurationPicker.gif">
-      <type-group name="numbers">
-        <type>Whole.None</type>
-      </type-group>
-      <property name="duration" display-name-key="Duration" description-key="Time in minutes (Whole Number)" of-type-group="numbers" usage="bound" required="true" />
+  <control namespace="Pickers" constructor="DuractionPicker" version="0.0.4" display-name-key="Duration Picker" description-key="Visual duration picker in hours/minutes" control-type="standard" preview-image="img/DurationPicker.gif">
+    <type-group name="numbers">
+      <type>Whole.None</type>
+    </type-group>
+    <property name="duration" display-name-key="Duration" description-key="Time in minutes (Whole Number)" of-type-group="numbers" usage="bound" required="true" />
     <resources>
-      <code path="index.ts" order="1"/>
+      <code path="index.ts" order="1" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/minReactPcf.css" order="1" />
       <resx path="strings/minReactPcf.1033.resx" version="1.0.0" />
