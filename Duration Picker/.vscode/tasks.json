@@ -1,0 +1,44 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "windows": {
+        "options": {
+            "shell": {
+                "executable": "powershell.exe"
+            }
+        }
+    },
+    "tasks": [
+        {
+            "label": "Init: Initialize Solution",
+            "type": "shell",
+            "detail": "Initialize solution for packaging component using MSBuild",
+            "command": "powershell.exe -command \".\\dev-scripts\\InitializeSolution.ps1\"",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Dist: Package Component using VS2019 Community Addition MSBuild",
+            "type": "shell",
+            "detail": "Package PCF Component",
+            "command": "powershell.exe -command \".\\dev-scripts\\packageSolution.ps1\"",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        }
+    ]
+}
