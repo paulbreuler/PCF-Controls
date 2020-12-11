@@ -356,7 +356,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => this.startContinuousIncrement(Time.Hours)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.onKeyDown(e, increment, Time.Hours)}
+            onKeyDown={(e: React.KeyboardEvent<any>) => this.onKeyDown(e, increment, Time.Hours)}
             onKeyUp={this.onKeyUp} />
           <TextField styles={narrowTextFieldStyles} value={this.setHoursText()}
             onChange={(e: any) => this.onTextChange(e, Time.Hours)} borderless placeholder="--" />
@@ -364,7 +364,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => { this.startContinuousDecrement(Time.Hours) }}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.onKeyDown(e, decrement, Time.Hours)}
+            onKeyDown={(e: React.KeyboardEvent<any>) => this.onKeyDown(e, decrement, Time.Hours)}
             onKeyUp={this.onKeyUp} />
           <Text> HRS </Text>
         </Stack>
@@ -376,7 +376,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => this.startContinuousIncrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.onKeyDown(e, increment, Time.Minutes)}
+            onKeyDown={(e: React.KeyboardEvent<any>) => this.onKeyDown(e, increment, Time.Minutes)}
             onKeyUp={this.onKeyUp} />
           <TextField styles={narrowTextFieldStyles} value={this.setMinutesText()}
             onChange={(e: any) => this.onTextChange(e, Time.Minutes)} borderless placeholder="--" />
@@ -384,7 +384,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseDown={() => this.startContinuousDecrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
-            onKeyDown={(e) => this.onKeyDown(e, decrement, Time.Minutes)}
+            onKeyDown={(e: React.KeyboardEvent<any>) => this.onKeyDown(e, decrement, Time.Minutes)}
             onKeyUp={this.onKeyUp} />
           <Text> MIN </Text>
         </Stack>
