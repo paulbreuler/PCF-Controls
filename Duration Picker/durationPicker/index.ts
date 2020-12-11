@@ -6,7 +6,7 @@ import { isNullOrUndefined } from "util";
 
 export class DuractionPicker implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
-	private _input: number;
+	private _input: number = 0;
 	private _inputElement: React.ReactElement;
 	private notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
@@ -39,10 +39,7 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 		if (!isNullOrUndefined(context.parameters.duration) && !isNullOrUndefined(context.parameters.duration.raw)) {
 			this._input = context.parameters.duration.raw || 0;
 			this.props.inputValue = this._input ? this._input : 0;
-
 		}
-
-		this.renderControl(context);
 	}
 
 	/**
@@ -54,6 +51,7 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 
 		if (this._input != context.parameters.duration.raw || (isNullOrUndefined(this._input) && !isNullOrUndefined(context.parameters.duration.raw))) {
 			this._input = context.parameters.duration.raw || 0;
+			this.props.inputValue = this._input ? this._input : 0;
 		}
 
 		this.renderControl(context);

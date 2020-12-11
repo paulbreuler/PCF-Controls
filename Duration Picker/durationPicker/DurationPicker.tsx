@@ -85,7 +85,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   constructor(props: IDurationPickerProps) {
     super(props);
     let duration = this.convertMinutes(this.props.inputValue);
-    
+
     this.state = {
       minutes: duration.minutes,
       hours: duration.hours,
@@ -100,6 +100,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       this.maxHours = this.props.maxHours;
     }
 
+    this.convertMinutes = this.convertMinutes.bind(this);
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.setMinutes = this.setMinutes.bind(this);
@@ -111,6 +112,14 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     this.liftDurationChange = this.liftDurationChange.bind(this);
     this.setHoursText = this.setHoursText.bind(this);
     this.setMinutesText = this.setMinutesText.bind(this);
+  }
+
+  componentDidUpdate(prevProps: IDurationPickerProps, other: any) {
+    if (this.props.inputValue !== prevProps.inputValue) {
+      let duration = this.convertMinutes(this.props.inputValue);
+      this.setHours(duration.hours);
+      this.setMinutes(duration.minutes);
+    }
   }
 
   /**

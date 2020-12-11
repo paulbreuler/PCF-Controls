@@ -14,7 +14,8 @@
     "build": "pcf-scripts build",
     "clean": "pcf-scripts clean",
     "rebuild": "pcf-scripts rebuild",
-    "start": "pcf-scripts start"
+    "start": "pcf-scripts start",
+    "watch": "pcf-scripts start \"watch\""
   },
   "dependencies": {
     "@fluentui/react": "^7.110.5",
