@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TextField, IStackStyles, Stack, IStackTokens, ITextFieldStyles, Text, IconButton, IButtonStyles, BaseButton, Button, Label, VirtualizedComboBox } from '@fluentui/react';
 import { IInputs } from "./generated/ManifestTypes";
 import { initializeIcons } from '@uifabric/icons';
-import { isNullOrUndefined } from 'util';
 initializeIcons();
 
 //#region  Interfaces
@@ -166,7 +165,8 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
 
           let incrementValue: number = 1;
 
-          if (!isNullOrUndefined(this.state.longPressStartTime) && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
+          if ((this.state.longPressStartTime !== null && this.state.longPressStartTime !== undefined)
+            && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
             incrementValue = 5;
           }
 
@@ -222,7 +222,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
       case Time.Minutes:
 
         let decrementValue: number = 1
-        if (!isNullOrUndefined(this.state.longPressStartTime) && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
+        if ((this.state.longPressStartTime !== null && this.state.longPressStartTime !== undefined) && (new Date().getTime() - (this.state.longPressStartTime as Date).getTime()) > this.mouseHoldVarianceDelay && this.state.minutes % 5 === 0) {
           decrementValue = 5;
         }
 

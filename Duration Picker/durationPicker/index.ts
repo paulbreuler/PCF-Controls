@@ -2,7 +2,6 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import ReactDOM = require("react-dom");
 import React = require("react");
 import { IDurationPickerProps, DurationPicker } from "./DurationPicker";
-import { isNullOrUndefined } from "util";
 
 export class DuractionPicker implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
@@ -36,7 +35,8 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 		this._container = container;
 		this.notifyOutputChanged = notifyOutputChanged;
 
-		if (!isNullOrUndefined(context.parameters.duration) && !isNullOrUndefined(context.parameters.duration.raw)) {
+		if ((context.parameters.duration !== null && context.parameters.duration !== undefined)
+			&& (context.parameters.duration.raw !== null && context.parameters.duration.raw !== undefined)) {
 			this._input = context.parameters.duration.raw || 0;
 			this.props.inputValue = this._input ? this._input : 0;
 		}
@@ -49,7 +49,8 @@ export class DuractionPicker implements ComponentFramework.StandardControl<IInpu
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		this._context = context;
 
-		if (this._input != context.parameters.duration.raw || (isNullOrUndefined(this._input) && !isNullOrUndefined(context.parameters.duration.raw))) {
+		if (this._input != context.parameters.duration.raw || ((this._input === null || this._input === undefined)
+			&& (context.parameters.duration.raw !== null || context.parameters.duration.raw !== undefined))) {
 			this._input = context.parameters.duration.raw || 0;
 			this.props.inputValue = this._input ? this._input : 0;
 		}
