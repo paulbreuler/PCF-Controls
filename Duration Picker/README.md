@@ -1,5 +1,7 @@
 ![Duration Picker Control](./durationPicker/img/DurationPicker.gif)
 
+Posted on PCF Gallery at https://pcf.gallery/duration-picker/. 
+
 # Duration Picker
 A react based duration picker that allows users to enter hours and minutes manually, by clicking the chevrons or manually entering time up to 24 hours.
 
