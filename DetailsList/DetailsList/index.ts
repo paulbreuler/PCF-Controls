@@ -3,8 +3,13 @@ import ReactDOM = require("react-dom");
 import React = require("react");
 import { DetailsListExample, IDetailsListExampelProps } from "./DetailsList";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import { IColumn, IconNames } from "@fluentui/react";
+import { IColumn } from "@fluentui/react";
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
+
+interface ISimplifiedDataSet {
+	simplifiedColumns: IColumn[],
+	simplifiedRecords: any[]
+}
 
 export class DetailsList implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
@@ -13,8 +18,6 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 	private notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _state: ComponentFramework.Dictionary;
-	private _simplifiedColumns: IColumn[] = [];
-	private _simplifiedRecords: any[] = [];
 
 	constructor() {
 
@@ -33,14 +36,14 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 		this.notifyOutputChanged = notifyOutputChanged;
 		this._state = state;
 		this._container = container;
-
-		this.simplifyDataSet(context);
 	}
 
-	private simplifyDataSet(context: ComponentFramework.Context<IInputs>): void {
+	private simplifyDataSet(context: ComponentFramework.Context<IInputs>): ISimplifiedDataSet {
+		let simplifiedColumns: IColumn[] = [];
+		let simplifiedRecords: any[] = [];
+
 		context.parameters.dataSet.columns.forEach((column: DataSetInterfaces.Column) => {
-			debugger;
-			this._simplifiedColumns.push({
+			simplifiedColumns.push({
 				key: column.name,
 				name: column.displayName,
 				fieldName: column.displayName,
@@ -61,11 +64,14 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 		context.parameters.dataSet.sortedRecordIds.forEach((recordId) => {
 			let currentRecord = context.parameters.dataSet.records[recordId];
 			let rec: any = {};
-			this._simplifiedColumns.forEach((column: IColumn) => {
+			debugger;
+			simplifiedColumns.forEach((column: IColumn) => {
 				rec[column.key] = currentRecord.getFormattedValue(column.name);
-				this._simplifiedRecords.push(rec);
+				simplifiedRecords.push(rec);
 			})
 		})
+
+		return { simplifiedColumns, simplifiedRecords };
 	}
 
 
@@ -79,9 +85,11 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 	}
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
+
+		let result : ISimplifiedDataSet = this.simplifyDataSet(context);
 		let props: IDetailsListExampelProps = {
-			columns: this._simplifiedColumns,
-			records: this._simplifiedRecords
+			columns: result.simplifiedColumns,
+			records: result.simplifiedRecords
 		}
 		ReactDOM.render(this._inputElement = React.createElement(DetailsListExample, props), this._container);
 	}
