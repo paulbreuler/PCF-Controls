@@ -3,6 +3,7 @@ import ReactDOM = require("react-dom");
 import React = require("react");
 import { DetailsListExample, IDetailsListExampelProps } from "./DetailsList";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
+import { IColumn, IconNames } from "@fluentui/react";
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class DetailsList implements ComponentFramework.StandardControl<IInputs, IOutputs> {
@@ -12,7 +13,8 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 	private notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _state: ComponentFramework.Dictionary;
-
+	private _simplifiedColumns: IColumn[] = [];
+	private _simplifiedRecords: any[] = [];
 
 	constructor() {
 
@@ -31,6 +33,39 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 		this.notifyOutputChanged = notifyOutputChanged;
 		this._state = state;
 		this._container = container;
+
+		this.simplifyDataSet(context);
+	}
+
+	private simplifyDataSet(context: ComponentFramework.Context<IInputs>): void {
+		context.parameters.dataSet.columns.forEach((column: DataSetInterfaces.Column) => {
+			debugger;
+			this._simplifiedColumns.push({
+				key: column.name,
+				name: column.displayName,
+				fieldName: column.displayName,
+				minWidth: 100,
+				maxWidth: 200,
+				isCollapsible: true,
+				isCollapsable: true,
+				isGrouped: false,
+				isMultiline: false,
+				isResizable: true,
+				isRowHeader: false,
+				isSorted: false,
+				isSortedDescending: false,
+				columnActionsMode: 1
+			})
+		});
+
+		context.parameters.dataSet.sortedRecordIds.forEach((recordId) => {
+			let currentRecord = context.parameters.dataSet.records[recordId];
+			let rec: any = {};
+			this._simplifiedColumns.forEach((column: IColumn) => {
+				rec[column.key] = currentRecord.getFormattedValue(column.name);
+				this._simplifiedRecords.push(rec);
+			})
+		})
 	}
 
 
@@ -45,7 +80,8 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
 		let props: IDetailsListExampelProps = {
-			dataSet: this._context.parameters.dataSet
+			columns: this._simplifiedColumns,
+			records: this._simplifiedRecords
 		}
 		ReactDOM.render(this._inputElement = React.createElement(DetailsListExample, props), this._container);
 	}

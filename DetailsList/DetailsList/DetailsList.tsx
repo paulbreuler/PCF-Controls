@@ -5,7 +5,8 @@ import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export interface IDetailsListExampelProps {
-  dataSet: ComponentFramework.PropertyTypes.DataSet
+  columns: IColumn[],
+  records: any[]
 }
 
 export interface IDetailsListExampleItem {
@@ -31,48 +32,12 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
       onSelectionChanged: () => this.setState({ selectionDetails: this._getSelectionDetails() }),
     });
 
-    // Populate with items for demos.
-    this._allItems = [];
-
-    let i = 0;
-    this._columns = [];
-    props.dataSet.columns.forEach((column: DataSetInterfaces.Column) => {
-      debugger;
-      this._columns.push({
-        key: column.name,
-        name: column.displayName,
-        fieldName: column.displayName,
-        minWidth: 100,
-        maxWidth: 200,
-        isCollapsible: true,
-        isCollapsable: true,
-        isGrouped: false,
-        isMultiline: false,
-        isResizable: true,
-        isRowHeader: false,
-        isSorted: false,
-        isSortedDescending: false,
-        columnActionsMode: 1
-      })
-      i++;
-    });
-
-    props.dataSet.sortedRecordIds.forEach((recordId) => {
-      let currentRecord = props.dataSet.records[recordId];
-      let rec: any = {};
-      this._columns.forEach((column: IColumn) => {
-        rec[column.key] = currentRecord.getFormattedValue(column.name);
-        this._allItems.push(rec);
-      })
-    })
 
     this.state = {
-      items: this._allItems,
+      items: props.records,
       selectionDetails: this._getSelectionDetails(),
     };
   }
-
-
 
   render() {
     const { items, selectionDetails } = this.state;
@@ -81,7 +46,7 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
         <MarqueeSelection selection={this._selection}>
           <DetailsList
             items={items}
-            columns={this._columns}
+            columns={this.props.columns}
             setKey="set"
             layoutMode={DetailsListLayoutMode.justified}
             selection={this._selection}
