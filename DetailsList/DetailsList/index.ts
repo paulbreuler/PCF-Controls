@@ -46,7 +46,7 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 			simplifiedColumns.push({
 				key: column.name,
 				name: column.displayName,
-				fieldName: column.displayName,
+				fieldName: column.name,
 				minWidth: 100,
 				maxWidth: 200,
 				isCollapsible: true,
@@ -64,11 +64,10 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 		context.parameters.dataSet.sortedRecordIds.forEach((recordId) => {
 			let currentRecord = context.parameters.dataSet.records[recordId];
 			let rec: any = {};
-			debugger;
 			simplifiedColumns.forEach((column: IColumn) => {
-				rec[column.key] = currentRecord.getFormattedValue(column.name);
-				simplifiedRecords.push(rec);
+				rec[column.key] = currentRecord.getFormattedValue(column.fieldName as string);
 			})
+			simplifiedRecords.push(rec);
 		})
 
 		return { simplifiedColumns, simplifiedRecords };
@@ -86,7 +85,7 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
 
-		let result : ISimplifiedDataSet = this.simplifyDataSet(context);
+		let result: ISimplifiedDataSet = this.simplifyDataSet(context);
 		let props: IDetailsListExampelProps = {
 			columns: result.simplifiedColumns,
 			records: result.simplifiedRecords
