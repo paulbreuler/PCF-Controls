@@ -62,8 +62,12 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 		});
 
 		context.parameters.dataSet.sortedRecordIds.forEach((recordId) => {
+			debugger;
 			let currentRecord = context.parameters.dataSet.records[recordId];
 			let rec: any = {};
+			
+			rec["recordId"] = currentRecord.getRecordId();
+
 			simplifiedColumns.forEach((column: IColumn) => {
 				rec[column.key] = currentRecord.getFormattedValue(column.fieldName as string);
 			})

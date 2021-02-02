@@ -17,9 +17,8 @@ export interface IDetailsListExampelProps {
 }
 
 export interface IDetailsListExampleItem {
-  key: number;
-  name: string;
-  value: any;
+  recordId: string,
+  [x: string]: any
 }
 
 export interface IDetailsListExampleState {
@@ -50,7 +49,7 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
   private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string | undefined): void => {
     let filteredSet = this._allItems.filter(i => JSON.stringify(i).toLowerCase().indexOf((text as string).toLowerCase()) > -1)
     this.setState({
-      items: text ? filteredSet: this._allItems,
+      items: text ? filteredSet : this._allItems,
     });
   };
 
@@ -70,7 +69,7 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
             ariaLabelForSelectionColumn="Toggle selection"
             ariaLabelForSelectAllCheckbox="Toggle selection for all items"
             checkButtonAriaLabel="Row checkbox"
-            onItemInvoked={this._onItemInvoked}
+            onItemInvoked={(item) => this._onItemInvoked(item)}
           />
         </MarqueeSelection>
       </Fabric>
@@ -90,8 +89,18 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
     }
   }
 
-  private _onItemInvoked = (item: IDetailsListExampleItem): void => {
-    alert(`Item invoked: ${item.name}`);
+  private async _onItemInvoked(item: IDetailsListExampleItem) {
+    debugger;
+    var entityFormOptions: any = {};
+    entityFormOptions["entityName"] = "contact";
+    entityFormOptions["entityId"] = item.recordId;
+
+    try {
+      let response = await Xrm.Navigation.openForm(entityFormOptions);
+    } catch (error) {
+      console.debug(error);
+    }
+
   };
 
 }
