@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import ReactDOM = require("react-dom");
 import React = require("react");
-import { DetailsListExample } from "./DetailsList";
+import { DetailsListExample, IDetailsListExampelProps } from "./DetailsList";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
@@ -12,6 +12,7 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 	private notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _state: ComponentFramework.Dictionary;
+
 
 	constructor() {
 
@@ -43,7 +44,10 @@ export class DetailsList implements ComponentFramework.StandardControl<IInputs, 
 	}
 
 	private renderControl(context: ComponentFramework.Context<IInputs>) {
-		ReactDOM.render(this._inputElement = React.createElement(DetailsListExample), this._container);
+		let props: IDetailsListExampelProps = {
+			dataSet: this._context.parameters.dataSet
+		}
+		ReactDOM.render(this._inputElement = React.createElement(DetailsListExample, props), this._container);
 	}
 	/** 
 	 * It is called by the framework prior to a control receiving new data. 

@@ -1,11 +1,17 @@
 import * as React from "react";
-import { Fabric, DetailsList, Selection, IColumn, MarqueeSelection, DetailsListLayoutMode } from "@fluentui/react"
+import { Fabric, DetailsList, Selection, IColumn, MarqueeSelection, DetailsListLayoutMode, ColumnActionsMode } from "@fluentui/react"
 import { IInputs } from "./generated/ManifestTypes";
+import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
+type DataSet = ComponentFramework.PropertyTypes.DataSet;
+
+export interface IDetailsListExampelProps {
+  dataSet: ComponentFramework.PropertyTypes.DataSet
+}
 
 export interface IDetailsListExampleItem {
   key: number;
   name: string;
-  value: number;
+  value: any;
 }
 
 export interface IDetailsListExampleState {
@@ -13,12 +19,12 @@ export interface IDetailsListExampleState {
   selectionDetails: string;
 }
 
-export class DetailsListExample extends React.Component<{}, IDetailsListExampleState> {
+export class DetailsListExample extends React.Component<IDetailsListExampelProps, IDetailsListExampleState> {
   private _selection: Selection;
   private _allItems: IDetailsListExampleItem[];
   private _columns: IColumn[];
 
-  constructor(props: {}) {
+  constructor(props: IDetailsListExampelProps) {
     super(props);
 
     this._selection = new Selection({
@@ -27,24 +33,46 @@ export class DetailsListExample extends React.Component<{}, IDetailsListExampleS
 
     // Populate with items for demos.
     this._allItems = [];
-    for (let i = 0; i < 200; i++) {
-      this._allItems.push({
-        key: i,
-        name: 'Item ' + i,
-        value: i,
-      });
-    }
 
-    this._columns = [
-      { key: 'column1', name: 'Name', fieldName: 'name', minWidth: 100, maxWidth: 200, isResizable: true },
-      { key: 'column2', name: 'Value', fieldName: 'value', minWidth: 100, maxWidth: 200, isResizable: true },
-    ];
+    let i = 0;
+    this._columns = [];
+    props.dataSet.columns.forEach((column: DataSetInterfaces.Column) => {
+      debugger;
+      this._columns.push({
+        key: column.name,
+        name: column.displayName,
+        fieldName: column.displayName,
+        minWidth: 100,
+        maxWidth: 200,
+        isCollapsible: true,
+        isCollapsable: true,
+        isGrouped: false,
+        isMultiline: false,
+        isResizable: true,
+        isRowHeader: false,
+        isSorted: false,
+        isSortedDescending: false,
+        columnActionsMode: 1
+      })
+      i++;
+    });
+
+    props.dataSet.sortedRecordIds.forEach((recordId) => {
+      let currentRecord = props.dataSet.records[recordId];
+      let rec: any = {};
+      this._columns.forEach((column: IColumn) => {
+        rec[column.key] = currentRecord.getFormattedValue(column.name);
+        this._allItems.push(rec);
+      })
+    })
 
     this.state = {
       items: this._allItems,
       selectionDetails: this._getSelectionDetails(),
     };
   }
+
+
 
   render() {
     const { items, selectionDetails } = this.state;
