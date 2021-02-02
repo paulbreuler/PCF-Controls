@@ -48,8 +48,7 @@ export class DetailsListExample extends React.Component<IDetailsListExampelProps
   }
 
   private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string | undefined): void => {
-    debugger;
-    let filteredSet = this._allItems.filter(i => i.name.toLowerCase().indexOf(text as string) > -1)
+    let filteredSet = this._allItems.filter(i => JSON.stringify(i).toLowerCase().indexOf((text as string).toLowerCase()) > -1)
     this.setState({
       items: text ? filteredSet: this._allItems,
     });
