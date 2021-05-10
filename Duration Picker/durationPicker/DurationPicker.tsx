@@ -254,8 +254,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
    * @param type "increment" or "decrement" as string
    * @param target "hours" or "minutes" as string
    */
-  private onKeyDown(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>, type: string, target: string): void {
-    if ([32, 13].includes(event.keyCode)) {
+  private onKeyDown(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | HTMLSpanElement>, type: "increment" | "decrement", target: string): void {
+    // " " - represents spacebar - https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+    if ([" ", "Spacebar", "Enter"].includes(event.key)) {
 
       if (this.isKeyDownDelay) return;
 
@@ -279,8 +280,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     }
   }
 
-  private onKeyUp(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | Button | HTMLSpanElement>) {
-    if ([32, 13].includes(event.keyCode)) {
+  private onKeyUp(event: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | BaseButton | HTMLSpanElement>) {
+    // " " - represents spacebar - https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+    if ([" ", "Spacebar", "Enter"].includes(event.key)) {
       this.setState({ isLongPress: false, longPressStartTime: null });
     }
   }
