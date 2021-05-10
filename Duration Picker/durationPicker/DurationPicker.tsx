@@ -356,7 +356,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     return (
       <Stack horizontal styles={stackStyles} disableShrink tokens={numericalSpacingStackTokens}>
         <Stack styles={stackStyles}>
-          <IconButton id={Time.Hours} iconProps={{ iconName: upIcon }} styles={buttonStyle}
+          <IconButton aria-label="Increment Hours" id={Time.Hours} iconProps={{ iconName: upIcon }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousIncrement(Time.Hours)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
@@ -364,7 +364,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onKeyUp={this.onKeyUp} />
           <TextField styles={narrowTextFieldStyles} value={this.setHoursText()}
             onChange={(e: any) => this.onTextChange(e, Time.Hours)} borderless placeholder="--" />
-          <IconButton id={Time.Hours} iconProps={{ iconName: downIcon }} styles={buttonStyle}
+          <IconButton aria-label="Decrement Hours" id={Time.Hours} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => { this.startContinuousDecrement(Time.Hours) }}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
@@ -376,7 +376,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
           <span>:</span>
         </Stack>
         <Stack styles={stackStyles}>
-          <IconButton id={Time.Minutes} iconProps={{ iconName: upIcon }} styles={buttonStyle}
+          <IconButton aria-label="Increment Minutes" id={Time.Minutes} iconProps={{ iconName: upIcon }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousIncrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousIncrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
@@ -384,7 +384,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onKeyUp={this.onKeyUp} />
           <TextField styles={narrowTextFieldStyles} value={this.setMinutesText()}
             onChange={(e: any) => this.onTextChange(e, Time.Minutes)} borderless placeholder="--" />
-          <IconButton id={Time.Minutes} iconProps={{ iconName: downIcon }} styles={buttonStyle}
+          <IconButton aria-label="Decrement Hours" id={Time.Minutes} iconProps={{ iconName: downIcon }} styles={buttonStyle}
             onMouseDown={() => this.startContinuousDecrement(Time.Minutes)}
             onMouseUp={() => this.stopContinuousDecrement()}
             onMouseOut={() => this.stopContinuousDecrement()}
