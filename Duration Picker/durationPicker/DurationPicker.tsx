@@ -297,9 +297,9 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
   /**
    * Handle manual input in text field
    * @param event 
-   * @param target "hours" or "minutes" as string
+   * @param target "hours" | "minutes" 
    */
-  private onTextChange(event: any, target: string): void {
+  private onTextChange(event: any, target: "hours" | "minutes"): void {
     let parsedValue: number = 0;
 
     // Empty string is non NaN
@@ -311,8 +311,10 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
     switch (target) {
       case Time.Hours:
 
-        if (parsedValue > this.maxHours)
+        if (parsedValue >= this.maxHours) {
           parsedValue = this.maxHours;
+          this.setMinutes(0);
+        }
 
         this.setHours(parsedValue);
         break;
