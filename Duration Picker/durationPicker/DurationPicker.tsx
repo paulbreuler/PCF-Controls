@@ -370,7 +370,7 @@ export class DurationPicker extends React.Component<IDurationPickerProps, IDurat
             onMouseOut={() => this.stopContinuousDecrement()}
             onKeyDown={(e: React.KeyboardEvent<any>) => this.onKeyDown(e, decrement, Time.Hours)}
             onKeyUp={this.onKeyUp} />
-          <Text> HRS </Text>
+          <Text> HR </Text>
         </Stack>
         <Stack horizontalAlign="center" styles={centerStackStyles}>
           <span>:</span>
