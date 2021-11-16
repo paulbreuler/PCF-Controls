@@ -22,3 +22,5 @@ Accepted input events:
 ## How to install
  - Grab a copy from the [releases section](https://github.com/paulbreuler/PCF-Controls/releases)
  - If you choose to fork this repo and modify the code reference the Microsft Docs [import custom controls](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls) article.
+- **Please note, at the time of publication PCFs do not support Duration type fields, this control is bound to a whole number field.**
+  - Reference: [Elements that are not supported](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/manifest-schema-reference/property#value-elements-that-are-not-supported)
